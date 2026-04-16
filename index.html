@@ -189,7 +189,7 @@
         <div><div class="stat-num">2</div><div class="stat-label t-en hidden">Languages</div><div class="stat-label t-ar">لغة</div></div>
       </div>
       <div class="hero-btns">
-        <a href="https://github.com/mrmsd76-lang/kitabplus-releases/releases/download/v1.0.23/kitabplus-v1.0.23.apk" class="btn-primary">
+        <a href="https://github.com/mrmsd76-lang/kitabplus-releases/releases/download/v1.0.23/kitabplus-v1.0.23.apk" class="btn-primary" id="hero-apk-btn">
           📱 <span class="t-en hidden">Download Free</span><span class="t-ar">حمّل مجاناً</span>
         </a>
         <a href="#books" class="btn-secondary">
@@ -362,9 +362,14 @@
         <span class="t-ar">احصل على تجربة قراءة أفضل مع كتاب بلس. متاح لأجهزة أندرويد.</span>
       </p>
       <div class="download-btns">
-        <a href="https://github.com/mrmsd76-lang/kitabplus-releases/releases/download/v1.0.23/kitabplus-v1.0.23.apk" class="apk-btn">
+        <a href="https://github.com/mrmsd76-lang/kitabplus-releases/releases/download/v1.0.23/kitabplus-v1.0.23.apk" class="apk-btn" id="main-apk-btn">
           🤖 <span class="t-en hidden">Download APK (Android)</span><span class="t-ar">تحميل APK (أندرويد)</span>
         </a>
+        <div id="version-badge" style="margin-top:10px;font-size:13px;color:rgba(255,255,255,0.55);text-align:center;letter-spacing:0.5px">
+          <span class="t-en hidden">Current version: </span><span class="t-ar">الإصدار الحالي: </span>
+          <span id="version-tag" style="color:var(--gold);font-weight:600">v1.0.23</span>
+          <span id="version-size" style="margin-right:6px;margin-left:6px;opacity:0.7"></span>
+        </div>
         <a href="#" class="store-btn" style="opacity:.5;pointer-events:none">
           <span class="store-icon">🍎</span>
           <div class="store-text">
@@ -534,6 +539,46 @@ function toggleLang(){
 }
 
 renderBooks();
+
+// ── Auto-fetch latest APK version from GitHub Releases ──────────────────────
+(async function fetchLatestRelease() {
+  try {
+    const res = await fetch('https://api.github.com/repos/mrmsd76-lang/kitabplus-releases/releases/latest', {
+      headers: { 'Accept': 'application/vnd.github.v3+json' }
+    });
+    if (!res.ok) return;
+    const data = await res.json();
+    const tag = data.tag_name; // e.g. "v1.0.23"
+    const asset = (data.assets || []).find(a => a.name.endsWith('.apk'));
+    if (!tag) return;
+
+    // بناء رابط التحميل
+    const apkName = asset ? asset.name : `kitabplus-${tag}.apk`;
+    const downloadUrl = asset
+      ? asset.browser_download_url
+      : `https://github.com/mrmsd76-lang/kitabplus-releases/releases/download/${tag}/${apkName}`;
+
+    // تحديث جميع أزرار التحميل
+    ['hero-apk-btn', 'main-apk-btn'].forEach(id => {
+      const btn = document.getElementById(id);
+      if (btn) btn.href = downloadUrl;
+    });
+
+    // تحديث رقم الإصدار
+    const versionTag = document.getElementById('version-tag');
+    if (versionTag) versionTag.textContent = tag;
+
+    // عرض حجم الملف إن وُجد
+    const sizeEl = document.getElementById('version-size');
+    if (sizeEl && asset && asset.size) {
+      const sizeMB = (asset.size / 1024 / 1024).toFixed(1);
+      sizeEl.textContent = `· ${sizeMB} MB`;
+    }
+  } catch (e) {
+    // في حالة الفشل تبقى الروابط الافتراضية المُضمَّنة
+    console.warn('[KitabPlus] Could not fetch latest release:', e.message);
+  }
+})();
 </script>
 </body>
 </html>
