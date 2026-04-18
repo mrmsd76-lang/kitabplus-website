@@ -189,7 +189,7 @@
         <div><div class="stat-num">2</div><div class="stat-label t-en hidden">Languages</div><div class="stat-label t-ar">لغة</div></div>
       </div>
       <div class="hero-btns">
-        <a href="https://drive.google.com/uc?export=download&id=15NXrLVHN_VsxpuAvSEgVjP_3n1Si2cTB" class="btn-primary" id="hero-apk-btn">
+        <a href="https://github.com/mrmsd76-lang/kitabplus-releases/releases/download/v1_0_29/bookstore-app-v1_0_29.apk" class="btn-primary" id="hero-apk-btn">
           📱 <span class="t-en hidden">Download Free</span><span class="t-ar">حمّل مجاناً</span>
         </a>
         <a href="#books" class="btn-secondary">
@@ -362,12 +362,12 @@
         <span class="t-ar">احصل على تجربة قراءة أفضل مع كتاب بلس. متاح لأجهزة أندرويد.</span>
       </p>
       <div class="download-btns">
-        <a href="https://drive.google.com/uc?export=download&id=15NXrLVHN_VsxpuAvSEgVjP_3n1Si2cTB" class="apk-btn" id="main-apk-btn">
+        <a href="https://github.com/mrmsd76-lang/kitabplus-releases/releases/download/v1_0_29/bookstore-app-v1_0_29.apk" class="apk-btn" id="main-apk-btn">
           🤖 <span class="t-en hidden">Download APK (Android)</span><span class="t-ar">تحميل APK (أندرويد)</span>
         </a>
         <div id="version-badge" style="margin-top:10px;font-size:13px;color:rgba(255,255,255,0.55);text-align:center;letter-spacing:0.5px">
           <span class="t-en hidden">Current version: </span><span class="t-ar">الإصدار الحالي: </span>
-          <span id="version-tag" style="color:var(--gold);font-weight:600">v1.0.26</span>
+          <span id="version-tag" style="color:var(--gold);font-weight:600">v1.0.29</span>
           <span id="version-size" style="margin-right:6px;margin-left:6px;opacity:0.7"></span>
         </div>
         <a href="#" class="store-btn" style="opacity:.5;pointer-events:none">
@@ -554,41 +554,8 @@ function toggleLang(){
 
 renderBooks();
 
-// ── الإصدار الحالي v1.0.26 - رابط Google Drive ──────────────────────
-// الروابط الافتراضية محدَّثة مباشرةً في الـ HTML أعلاه
-// السكريبت التالي يحاول جلب أحدث إصدار من GitHub إن وُجد
-(async function fetchLatestRelease() {
-  try {
-    const res = await fetch('https://api.github.com/repos/mrmsd76-lang/kitabplus-releases/releases/latest', {
-      headers: { 'Accept': 'application/vnd.github.v3+json' }
-    });
-    if (!res.ok) return;
-    const data = await res.json();
-    const tag = data.tag_name;
-    const asset = (data.assets || []).find(a => a.name.endsWith('.apk'));
-    if (!tag) return;
-
-    // تحديث رقم الإصدار فقط إذا كان أحدث من v1.0.26
-    const versionTag = document.getElementById('version-tag');
-    if (versionTag) versionTag.textContent = tag;
-
-    // تحديث الرابط فقط إذا كان الأصل متاحاً على GitHub
-    if (asset && asset.browser_download_url) {
-      ['hero-apk-btn', 'main-apk-btn'].forEach(id => {
-        const btn = document.getElementById(id);
-        if (btn) btn.href = asset.browser_download_url;
-      });
-      const sizeEl = document.getElementById('version-size');
-      if (sizeEl && asset.size) {
-        const sizeMB = (asset.size / 1024 / 1024).toFixed(1);
-        sizeEl.textContent = `· ${sizeMB} MB`;
-      }
-    }
-  } catch (e) {
-    // في حالة الفشل تبقى روابط Google Drive الافتراضية
-    console.warn('[KitabPlus] Could not fetch latest release:', e.message);
-  }
-})();
+// ── الإصدار الحالي v1.0.29 - رابط Google Drive ──────────────────────
+// الروابط محدَّثة مباشرةً في الـ HTML أعلاه - لا حاجة لجلب تلقائي
 </script>
 </body>
 </html>
