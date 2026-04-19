@@ -189,7 +189,7 @@
         <div><div class="stat-num">2</div><div class="stat-label t-en hidden">Languages</div><div class="stat-label t-ar">لغة</div></div>
       </div>
       <div class="hero-btns">
-        <a href="https://github.com/mrmsd76-lang/kitabplus-releases/releases/download/v1_0_29/bookstore-app-v1_0_29.apk" class="btn-primary" id="hero-apk-btn">
+        <a href="https://github.com/mrmsd76-lang/kitabplus-releases/releases/latest/download/bookstore-app.apk" class="btn-primary" id="hero-apk-btn">
           📱 <span class="t-en hidden">Download Free</span><span class="t-ar">حمّل مجاناً</span>
         </a>
         <a href="#books" class="btn-secondary">
@@ -362,7 +362,7 @@
         <span class="t-ar">احصل على تجربة قراءة أفضل مع كتاب بلس. متاح لأجهزة أندرويد.</span>
       </p>
       <div class="download-btns">
-        <a href="https://github.com/mrmsd76-lang/kitabplus-releases/releases/download/v1_0_29/bookstore-app-v1_0_29.apk" class="apk-btn" id="main-apk-btn">
+        <a href="https://github.com/mrmsd76-lang/kitabplus-releases/releases/latest/download/bookstore-app.apk" class="apk-btn" id="main-apk-btn">
           🤖 <span class="t-en hidden">Download APK (Android)</span><span class="t-ar">تحميل APK (أندرويد)</span>
         </a>
         <div id="version-badge" style="margin-top:10px;font-size:13px;color:rgba(255,255,255,0.55);text-align:center;letter-spacing:0.5px">
@@ -554,8 +554,19 @@ function toggleLang(){
 
 renderBooks();
 
-// ── الإصدار الحالي v1.0.29 - رابط Google Drive ──────────────────────
-// الروابط محدَّثة مباشرةً في الـ HTML أعلاه - لا حاجة لجلب تلقائي
+// ── جلب رقم الإصدار تلقائياً من GitHub Releases ──────────────────────
+(function(){
+  fetch('https://api.github.com/repos/mrmsd76-lang/kitabplus-releases/releases/latest')
+    .then(function(r){ return r.json(); })
+    .then(function(data){
+      if(data && data.tag_name){
+        var tag = data.tag_name.replace(/_/g,'.');
+        var el = document.getElementById('version-tag');
+        if(el) el.textContent = tag;
+      }
+    })
+    .catch(function(){});
+})();
 </script>
 </body>
 </html>
